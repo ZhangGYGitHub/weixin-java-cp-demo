@@ -5,23 +5,11 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
-import me.chanjar.weixin.cp.constant.WxCpConsts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import com.github.binarywang.demo.wx.cp.handler.ContactChangeHandler;
-import com.github.binarywang.demo.wx.cp.handler.EnterAgentHandler;
-import com.github.binarywang.demo.wx.cp.handler.LocationHandler;
-import com.github.binarywang.demo.wx.cp.handler.LogHandler;
-import com.github.binarywang.demo.wx.cp.handler.MenuHandler;
-import com.github.binarywang.demo.wx.cp.handler.MsgHandler;
-import com.github.binarywang.demo.wx.cp.handler.NullHandler;
-import com.github.binarywang.demo.wx.cp.handler.SubscribeHandler;
-import com.github.binarywang.demo.wx.cp.handler.UnsubscribeHandler;
 import com.google.common.collect.Maps;
 import lombok.val;
-import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.message.WxCpMessageRouter;
@@ -32,13 +20,6 @@ import me.chanjar.weixin.cp.message.WxCpMessageRouter;
 @Configuration
 @EnableConfigurationProperties(WxCpProperties.class)
 public class WxCpConfiguration {
-    private LogHandler logHandler;
-    private NullHandler nullHandler;
-    private LocationHandler locationHandler;
-    private MenuHandler menuHandler;
-    private MsgHandler msgHandler;
-    private UnsubscribeHandler unsubscribeHandler;
-    private SubscribeHandler subscribeHandler;
 
     private WxCpProperties properties;
 
@@ -46,16 +27,7 @@ public class WxCpConfiguration {
     private static Map<Integer, WxCpService> cpServices = Maps.newHashMap();
 
     @Autowired
-    public WxCpConfiguration(LogHandler logHandler, NullHandler nullHandler, LocationHandler locationHandler,
-                             MenuHandler menuHandler, MsgHandler msgHandler, UnsubscribeHandler unsubscribeHandler,
-                             SubscribeHandler subscribeHandler, WxCpProperties properties) {
-        this.logHandler = logHandler;
-        this.nullHandler = nullHandler;
-        this.locationHandler = locationHandler;
-        this.menuHandler = menuHandler;
-        this.msgHandler = msgHandler;
-        this.unsubscribeHandler = unsubscribeHandler;
-        this.subscribeHandler = subscribeHandler;
+    public WxCpConfiguration( WxCpProperties properties) {
         this.properties = properties;
     }
 
@@ -86,49 +58,6 @@ public class WxCpConfiguration {
 
     private WxCpMessageRouter newRouter(WxCpService wxCpService) {
         final val newRouter = new WxCpMessageRouter(wxCpService);
-
-        // 记录所有事件的日志 （异步执行）
-        newRouter.rule().handler(this.logHandler).next();
-
-        // 自定义菜单事件
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxConsts.MenuButtonType.CLICK).handler(this.menuHandler).end();
-
-        // 点击菜单链接事件（这里使用了一个空的处理器，可以根据自己需要进行扩展）
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxConsts.MenuButtonType.VIEW).handler(this.nullHandler).end();
-
-        // 关注事件
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxConsts.EventType.SUBSCRIBE).handler(this.subscribeHandler)
-            .end();
-
-        // 取消关注事件
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxConsts.EventType.UNSUBSCRIBE)
-            .handler(this.unsubscribeHandler).end();
-
-        // 上报地理位置事件
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxConsts.EventType.LOCATION).handler(this.locationHandler)
-            .end();
-
-        // 接收地理位置消息
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.LOCATION)
-            .handler(this.locationHandler).end();
-
-        // 扫码事件（这里使用了一个空的处理器，可以根据自己需要进行扩展）
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxConsts.EventType.SCAN).handler(this.nullHandler).end();
-
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxCpConsts.EventType.CHANGE_CONTACT).handler(new ContactChangeHandler()).end();
-
-        newRouter.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT)
-            .event(WxCpConsts.EventType.ENTER_AGENT).handler(new EnterAgentHandler()).end();
-
-        // 默认
-        newRouter.rule().async(false).handler(this.msgHandler).end();
 
         return newRouter;
     }
