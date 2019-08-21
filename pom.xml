@@ -9,13 +9,13 @@
         <version>2.0.4.RELEASE</version>
     </parent>
 
-    <groupId>com.github.binarywang</groupId>
+    <groupId>com.ningxun</groupId>
     <version>1.0.0-SNAPSHOT</version>
-    <artifactId>weixin-java-cp-demo</artifactId>
+    <artifactId>MYYOUTH</artifactId>
     <packaging>jar</packaging>
 
-    <name>spring-boot-demo-for-wechat-cp</name>
-    <description>Spring Boot Demo with wechat CP</description>
+    <name>MYYOUTH</name>
+    <description>My youth</description>
 
     <properties>
         <weixin-java-cp.version>3.5.0</weixin-java-cp.version>
@@ -55,7 +55,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Testing Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
