@@ -1,8 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>出错啦！</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>应用主页</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../static/css/layui.mobile.css">
+    <link rel="stylesheet" href="../static/css/layui.css">
 </head>
 <body>
 <p th:text="'Url:' + ${URL}"/>
@@ -12,5 +16,18 @@
 <p th:text="'Path:' + ${path}"/>
 <p th:text="'Status:' + ${status}"/>
 <p th:text="'Timestamp:' + ${timestamp}"/>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
 </body>
+<script type="text/javascript" src="../static/js/layui.js"></script>
 </html>
