@@ -21,4 +21,5 @@ public class MyAppConfig extends WebMvcConfigurationSupport {
             registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         }
 
+
 }
