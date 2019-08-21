@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>应用主页</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../static/css/weui.min.css">
+    <link rel="stylesheet" href="../static/css/jquery-weui.css">
+    <link rel="stylesheet" href="../static/css/demos.css">
+</head>
+<body bgcolor="#F5F5F5">
+    <div class='demos-header'>
+        <h1 class="demos-title">完善用户信息</h1>
+    </div>
+    <div class="weui-cells weui-cells_form" >
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">姓名</label>
+            </div>
+            <div class="weui-cell__bd">
+                <label class="weui-label" th:text="${user.name}">张广勇</label>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">手机号码</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" readonly="readonly"  laceholder="请输入手机号" th:value="${user.mobile}" value="15831921679">
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title">性别</div>
+    <div class="weui-cells weui-cells_radio">
+        <label class="weui-cell weui-check__label" for="1">
+            <div class="weui-cell__bd">
+                <p>男士</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="radio" class="weui-check" name="gender" id="1" th:value="1" th:checked="${#strings.contains(user.gender,'MALE')}">
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+        <label class="weui-cell weui-check__label" for="0">
+
+            <div class="weui-cell__bd">
+                <p>女士</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="radio" name="gender" class="weui-check" id="0" th:value="2" th:checked="${#strings.contains(user.gender,'FEMALE')}" >
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+    </div>
+    <div class="weui-cells__title">工作单位</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" name="workAddr" placeholder="请填写工作单位" rows="3" th:text="${user.extAttrs[0].value}"></textarea>
+                <div class="weui-textarea-counter"><span>0</span>/200</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui-btn-area">
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>
+</div>
+</body>
+<script src="../static/js/jquery-2.1.4.js"></script>
+<script src="../static/js/fastclick.js"></script>
+<script src="../static/js/jquery-weui.js"></script>
+<script>
+    $("#showTooltips").click(function() {
+       var gender = $("input[name='gender']:checked").val();
+       var workAddr = $("[name='workAddr']").val();
+        $.ajax({
+            url:"/update",
+            data:{
+                gender : gender,
+                workAddr: workAddr,
+            },
+            success:function(res){
+                $.toast("提交成功");
+            }
+        });
+    });
+</script>
+</body>
+</html>
