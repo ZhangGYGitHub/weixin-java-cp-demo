@@ -11,7 +11,7 @@
 </head>
 <body bgcolor="#F5F5F5">
     <div class='demos-header'>
-        <h1 class="demos-title">完善用户信息</h1>
+        <h1 class="demos-title">完善资料</h1>
     </div>
     <div class="weui-cells weui-cells_form" >
         <div class="weui-cell">
@@ -31,28 +31,35 @@
             </div>
         </div>
     </div>
-
     <div class="weui-cells__title">性别</div>
+    
     <div class="weui-cells weui-cells_radio">
-        <label class="weui-cell weui-check__label" for="1">
-            <div class="weui-cell__bd">
-                <p>男士</p>
-            </div>
-            <div class="weui-cell__ft">
-                <input type="radio" class="weui-check" name="gender" id="1" th:value="1" th:checked="${#strings.contains(user.gender,'MALE')}">
-                <span class="weui-icon-checked"></span>
-            </div>
-        </label>
-        <label class="weui-cell weui-check__label" for="0">
-
-            <div class="weui-cell__bd">
-                <p>女士</p>
-            </div>
-            <div class="weui-cell__ft">
-                <input type="radio" name="gender" class="weui-check" id="0" th:value="2" th:checked="${#strings.contains(user.gender,'FEMALE')}" >
-                <span class="weui-icon-checked"></span>
-            </div>
-        </label>
+            <div class="weui-flex">
+                    <div class="weui-flex__item">
+                            <label class="weui-cell weui-check__label" for="1">
+                                    <div class="weui-cell__bd">
+                                        <p>男士</p>
+                                    </div>
+                                    <div class="weui-cell__ft">
+                                        <input type="radio" class="weui-check" name="gender" id="1" th:value="1" th:checked="${#strings.contains(user.gender,'MALE')}">
+                                        <span class="weui-icon-checked"></span>
+                                    </div>
+                                </label>
+                    </div>
+                    <div class="weui-flex__item">
+                            <label class="weui-cell weui-check__label" for="0">
+                                    <div class="weui-cell__bd">
+                                        <p>女士</p>
+                                    </div>
+                                    <div class="weui-cell__ft">
+                                        <input type="radio" name="gender" class="weui-check" id="0" th:value="2" th:checked="${#strings.contains(user.gender,'FEMALE')}" >
+                                        <span class="weui-icon-checked"></span>
+                                    </div>
+                                </label>
+                    </div>
+                  </div>
+      
+       
     </div>
     <div class="weui-cells__title">工作单位</div>
     <div class="weui-cells weui-cells_form">
